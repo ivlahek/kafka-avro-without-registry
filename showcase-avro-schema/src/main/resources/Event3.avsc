@@ -1,0 +1,13 @@
+{
+  "type" : "record",
+  "name" : "Event3",
+  "namespace" : "hr.ivlahek.showcase.event.dto",
+  "doc" : "Schema for hr.ivlahek.showcase.event.dto.Event3",
+  "fields" : [ {
+    "name" : "id",
+    "type" : [ "null", "int" ]
+  }, {
+    "name" : "timestamp",
+    "type" : "long"
+  } ]
+}
