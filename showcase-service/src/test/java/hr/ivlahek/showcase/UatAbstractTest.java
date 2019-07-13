@@ -50,6 +50,7 @@ public abstract class UatAbstractTest {
         event3Producer = new KafkaProducer<>(senderProps);
         event4Producer = new KafkaProducer<>(senderProps);
 
+        //consumers used in test code needs to be created like this in code because otherwise it won't work
         Map<String, Object> configs = new HashMap<>(KafkaTestUtils.consumerProps("in-test-consumer", "false", kafkaEmbedded));
         configs.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, org.apache.kafka.common.serialization.StringDeserializer.class);
         configs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, CustomKafkaAvroDeserializer.class);
@@ -72,10 +73,10 @@ public abstract class UatAbstractTest {
 
     @After
     public void reset() {
+        //consumers needs to be closed because new one are created before every test
         event3Consumer.close();
         event4Consumer.close();
         event1Consumer.close();
-        ;
         event2Consumer.close();
     }
 
