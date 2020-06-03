@@ -5,6 +5,7 @@ import hr.ivlahek.showcase.event.dto.Event2;
 import hr.ivlahek.showcase.event.dto.Event3;
 import hr.ivlahek.showcase.event.dto.Event4;
 import hr.ivlahek.showcase.mock.CustomKafkaAvroDeserializer;
+import org.apache.avro.generic.GenericData;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -36,7 +37,7 @@ public abstract class UatAbstractTest {
     @Autowired
     private EmbeddedKafkaBroker kafkaEmbedded;
     protected Producer<String, Event3> event3Producer;
-    protected Consumer<String, Event3> event3Consumer;
+    protected Consumer<String, GenericData> event3Consumer;
     protected Consumer<String, Event1> event1Consumer;
     protected Consumer<String, Event2> event2Consumer;
 
@@ -58,7 +59,7 @@ public abstract class UatAbstractTest {
         configs.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
         configs.put("schema.registry.url", "not-used");
 
-        event3Consumer = new DefaultKafkaConsumerFactory<String, Event3>(configs).createConsumer("in-test-consumer", "10");
+        event3Consumer = new DefaultKafkaConsumerFactory<String, GenericData>(configs).createConsumer("in-test-consumer", "10");
         event4Consumer = new DefaultKafkaConsumerFactory<String, Event4>(configs).createConsumer("in-test-consumer", "10");
         event1Consumer = new DefaultKafkaConsumerFactory<String, Event1>(configs).createConsumer("in-test-consumer", "10");
         event2Consumer = new DefaultKafkaConsumerFactory<String, Event2>(configs).createConsumer("in-test-consumer", "10");

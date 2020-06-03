@@ -4,11 +4,17 @@ import hr.ivlahek.showcase.Constants;
 import hr.ivlahek.showcase.UatAbstractTest;
 import hr.ivlahek.showcase.event.dto.Event3;
 import hr.ivlahek.showcase.event.dto.Event4;
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.specific.SpecificData;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -25,8 +31,15 @@ public class MessageReceiverTest extends UatAbstractTest {
                 .setId(1)
                 .build()));
 
-        ConsumerRecord<String, Event3> consumerRecord = KafkaTestUtils.getSingleRecord(event3Consumer, Constants.EVENT_3_TOPIC);
-        assertThat(consumerRecord).isNotNull();
+        Iterable<ConsumerRecord<String, GenericData>> records = KafkaTestUtils.getRecords(event3Consumer).records(Constants.EVENT_3_TOPIC);
+        List<Event3> events =
+                Lists.newArrayList(records).stream().collect(Collectors.mapping(consumerRecord -> map(consumerRecord), Collectors.toList()));
+
+        assertThat(events.get(0).getId()).isEqualTo(1);
+    }
+
+    private Event3 map(ConsumerRecord record) {
+        return (Event3) SpecificData.get().deepCopy(Event3.SCHEMA$, record.value());
     }
 
     @Test
