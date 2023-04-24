@@ -13,3 +13,5 @@ There is no Serializer/Deserializer provided by the Spring framework for such a 
 Even if you just want to test your application, your application needs to have access to Confluent Schema Registry to work.
 
 This is a test project in which is shown how to test Spring Kafka application without the need for Confluent Schema Registry.
+
+Link to the article published on Medium https://medium.com/@igorvlahek1/no-need-for-schema-registry-in-your-spring-kafka-tests-a5b81468a0e1
